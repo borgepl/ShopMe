@@ -62,8 +62,13 @@ public class UserRepositoryTests {
             User testUser = testOptional.get();
             assertThat(testUser).isNotNull();
         }
-
     }
 
+    @Test
+    public void testGetUserByEmail() {
+        String email = "borgepl@me.com";
+        User userByEmail = userRepository.getUserByEmail(email);
 
+        assertThat(userByEmail).isNotNull();
+    }
 }
