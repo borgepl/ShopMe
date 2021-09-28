@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -71,6 +72,14 @@ public class UserService {
         } catch (NoSuchElementException exception) {
             throw new UserNotFoundException("Could not find any user with ID " + id);
         }
+    }
+
+    public void delete(Integer id) throws UserNotFoundException {
+        Long countById = userRepository.countById(id);
+        if (countById == null || countById == 0) {
+            throw new UserNotFoundException("Could not find any user with ID " + id);
+        }
+        userRepository.deleteById(id);
     }
 }
 
