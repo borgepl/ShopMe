@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width,intial-scale=1.0, minimal-scale=1.0">
     <title>Home - Shopme Admin Control Panel</title>
     <link rel="stylesheet" type="text/css" th:href="@{/fontawesome/all.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/style.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
     <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
     <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
@@ -86,14 +87,19 @@
             <tbody>
                 <tr th:each="user : ${listUsers}">
                     <td th:text="${user.id}"></td>
-                    <td><span class="fas fa-portrait"></span></td>
+                    <td><span class="fas fa-portrait fa-3x icon-dark"></span></td>
                     <td th:text="${user.email}"></td>
                     <td th:text="${user.firstName}"></td>
                     <td th:text="${user.lastName}"></td>
                     <td th:text="${user.roles}"></td>
-                    <td th:text="${user.enabled}"></td>
                     <td>
-                        Edit &nbsp; Delete
+                        <a th:if="${user.enabled == true}" class="fas fa-check-circle fa-2x icon-green" href=""></a>
+                        <a th:if="${user.enabled == false}" class="fas fa-check-circle fa-2x icon-dark" href=""></a>
+                    </td>
+                    <td>
+                        <a class="fas fa-edit fa-2x icon-green" href=""></a>
+                        &nbsp;
+                        <a class="fas fa-trash fa-2x icon-silver" href=""></a>
                     </td>
                 </tr>
             </tbody>
