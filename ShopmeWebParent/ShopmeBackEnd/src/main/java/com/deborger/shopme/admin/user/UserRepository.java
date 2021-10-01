@@ -1,6 +1,7 @@
 package com.deborger.shopme.admin.user;
 
 import com.deborger.shopme.common.entity.User;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -16,4 +17,8 @@ public interface UserRepository extends CrudRepository<User,Integer> {
 
     @Query("select count(u) from User u where u.id = :id")
     public Long countUserById(@Param("id") Integer id);
+
+    @Query("update User u set u.enabled = ?2 where u.id = ?1")
+    @Modifying
+    public void updateEnabledStatus(Integer id, Boolean enabled) ;
 }

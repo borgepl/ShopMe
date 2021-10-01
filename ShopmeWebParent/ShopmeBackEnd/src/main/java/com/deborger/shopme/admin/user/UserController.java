@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 
 @Controller
@@ -68,6 +69,18 @@ public class UserController {
         } catch (UserNotFoundException e) {
             redirectAttributes.addFlashAttribute("message",e.getMessage());
         }
+        return "redirect:/users";
+    }
+
+    @GetMapping("/users/{id}/enabled/{status}")
+    public String UpdateUserEnabledStatus(@PathVariable(name = "id") Integer id,
+                                          @PathVariable(name = "status") Boolean enabled,
+                                          RedirectAttributes redirectAttributes) {
+        userService.updateUserEnabledStatus(id,enabled);
+        String status = enabled ? "enabled" : "disabled";
+        String message = "The user ID " + id + " has been " + status;
+
+        redirectAttributes.addFlashAttribute("message",message);
         return "redirect:/users";
     }
 
