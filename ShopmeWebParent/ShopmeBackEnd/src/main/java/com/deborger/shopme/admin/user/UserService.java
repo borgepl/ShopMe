@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -32,7 +31,7 @@ public class UserService {
         return (List<Role>) roleRepository.findAll();
     }
 
-    public void save(User theUser) {
+    public User save(User theUser) {
         boolean isUpdatingUser = (theUser.getId() != null);
         if (isUpdatingUser) {
             User userExisting = userRepository.findById(theUser.getId()).get();
@@ -44,7 +43,8 @@ public class UserService {
         } else {
             encodePassword(theUser);
         }
-        userRepository.save(theUser);
+        return userRepository.save(theUser);
+
     }
 
     private void encodePassword(User user) {
