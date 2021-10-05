@@ -4,6 +4,7 @@ import com.deborger.shopme.admin.FileUploadUtil;
 import com.deborger.shopme.common.entity.Role;
 import com.deborger.shopme.common.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -21,9 +22,35 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/users")
+    @GetMapping("/users/all")
     public String listAll(Model model) {
         List<User> userList = userService.listAll();
+        model.addAttribute("listUsers",userList);
+        return "users";
+    }
+
+    @GetMapping("/users")
+    public String listFirstPage(Model model) {
+        return listByPage(1,model);
+    }
+
+    @GetMapping("/users/page/{pageid}")
+    public String listByPage(@PathVariable(name = "pageid") Integer pageNum, Model model) {
+        Page<User> page = userService.listByPage(pageNum);
+        List<User> userList = page.getContent();
+//        System.out.println("Pagenum : " + pageNum);
+//        System.out.println("Total elements : " + page.getTotalElements());
+//        System.out.println("Total pages : " + page.getTotalPages());
+        long startCount = (pageNum - 1) * UserService.USERS_PER_PAGE + 1;
+        long endCount = startCount + UserService.USERS_PER_PAGE - 1;
+        if (endCount > page.getTotalElements()) {
+            endCount = page.getTotalElements();
+        }
+        model.addAttribute("currentPage",pageNum);
+        model.addAttribute("startCount",startCount);
+        model.addAttribute("endCount",endCount);
+        model.addAttribute("totalItems",page.getTotalElements());
+        model.addAttribute("totalPages",page.getTotalPages());
         model.addAttribute("listUsers",userList);
         return "users";
     }
