@@ -1,10 +1,11 @@
 package com.deborger.shopme.admin.user;
 
-import com.deborger.shopme.admin.FileUploadUtil;
 import com.deborger.shopme.common.entity.Role;
 import com.deborger.shopme.common.entity.User;
+import com.deborger.shopme.admin.FileUploadUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.io.IOException;
 import java.util.List;
 
@@ -31,14 +31,15 @@ public class UserController {
 
     @GetMapping("/users")
     public String listFirstPage(Model model) {
-        return listByPage(1,model);
+        return listByPage(1,model, "firstName","asc");
     }
 
-    @GetMapping("/users/page/{pageid}")
-    public String listByPage(@PathVariable(name = "pageid") Integer pageNum, Model model) {
-        Page<User> page = userService.listByPage(pageNum);
+    @GetMapping("/users/page/{pageId}")
+    public String listByPage(@PathVariable(name = "pageId") Integer pageNum, Model model,
+        @Param("sortField") String sortField, @Param("sortDir") String sortDir ) {
+        Page<User> page = userService.listByPage(pageNum,sortField,sortDir);
         List<User> userList = page.getContent();
-//        System.out.println("Pagenum : " + pageNum);
+//        System.out.println("PageNum : " + pageNum);
 //        System.out.println("Total elements : " + page.getTotalElements());
 //        System.out.println("Total pages : " + page.getTotalPages());
         long startCount = (pageNum - 1) * UserService.USERS_PER_PAGE + 1;
@@ -46,11 +47,19 @@ public class UserController {
         if (endCount > page.getTotalElements()) {
             endCount = page.getTotalElements();
         }
+        String reverseSortDir = sortDir.equals("asc") ? "desc" : "asc";
+        // Model attributes for pagination
         model.addAttribute("currentPage",pageNum);
         model.addAttribute("startCount",startCount);
         model.addAttribute("endCount",endCount);
         model.addAttribute("totalItems",page.getTotalElements());
         model.addAttribute("totalPages",page.getTotalPages());
+        // Model attributes for sorting
+        model.addAttribute("sortField",sortField);
+        model.addAttribute("sortDir",sortDir);
+        model.addAttribute("reverseSortDir",reverseSortDir);
+
+        // Model for the table content
         model.addAttribute("listUsers",userList);
         return "users";
     }
@@ -76,8 +85,8 @@ public class UserController {
             theUser.setPhotos(fileName);
             User savedUser = userService.save(theUser);
             String uploadDir = "user-photos/" + savedUser.getId();
-            FileUploadUtil.cleanDir(uploadDir);
-            FileUploadUtil.saveFile(uploadDir,fileName,multipartFile);
+            FileUploadUtils.cleanDir(uploadDir);
+            FileUploadUtils.saveFile(uploadDir,fileName,multipartFile);
         } else {
             if (theUser.getPhotos().isEmpty()) {
                 theUser.setPassword(null);

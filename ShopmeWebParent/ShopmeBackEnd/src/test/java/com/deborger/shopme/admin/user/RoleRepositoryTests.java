@@ -19,14 +19,14 @@ public class RoleRepositoryTests {
     @Autowired
     private RoleRepository roleRepository;
 
-    @Test
+    //@Test
     public void testCreateFirstRole(){
         Role roleAdmin = new Role("Admin","manage everything");
         Role savedRole = roleRepository.save(roleAdmin);
         assertThat(savedRole.getId()).isGreaterThan(0);
     }
 
-    @Test
+    //@Test
     public void testCreateRestRoles() {
         Role roleSalesperson = new Role("Salesperson","manage product price, customers, shipping, " +
                 "orders and sales reports");

@@ -31,7 +31,7 @@ public class UserRepositoryTests {
     @Autowired
     private TestEntityManager entityManager;
 
-    @Test
+    //@Test
     public void testCreateUser() {
         Role roleAdmin = entityManager.find(Role.class, 1);
         User testUser = new User("borgepl@me.com","P2020","Pascal","De Borger");
@@ -40,7 +40,7 @@ public class UserRepositoryTests {
         assertThat(savedUser.getId()).isGreaterThan(0);
     }
 
-    @Test
+    //@Test
     public void testCreateUserWithTwoRoles() {
 
         User testUser2 = new User("Ravi@me.com","P2020","Rave","Kumar");
