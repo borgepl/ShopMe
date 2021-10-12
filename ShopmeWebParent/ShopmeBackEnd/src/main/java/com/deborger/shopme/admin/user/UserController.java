@@ -31,13 +31,13 @@ public class UserController {
 
     @GetMapping("/users")
     public String listFirstPage(Model model) {
-        return listByPage(1,model, "firstName","asc");
+        return listByPage(1,model, "firstName","asc",null);
     }
 
     @GetMapping("/users/page/{pageId}")
     public String listByPage(@PathVariable(name = "pageId") Integer pageNum, Model model,
-        @Param("sortField") String sortField, @Param("sortDir") String sortDir ) {
-        Page<User> page = userService.listByPage(pageNum,sortField,sortDir);
+        @Param("sortField") String sortField, @Param("sortDir") String sortDir, @Param("keyword") String keyword ) {
+        Page<User> page = userService.listByPage(pageNum,sortField,sortDir,keyword);
         List<User> userList = page.getContent();
 //        System.out.println("PageNum : " + pageNum);
 //        System.out.println("Total elements : " + page.getTotalElements());
@@ -54,10 +54,11 @@ public class UserController {
         model.addAttribute("endCount",endCount);
         model.addAttribute("totalItems",page.getTotalElements());
         model.addAttribute("totalPages",page.getTotalPages());
-        // Model attributes for sorting
+        // Model attributes for sorting and filtering
         model.addAttribute("sortField",sortField);
         model.addAttribute("sortDir",sortDir);
         model.addAttribute("reverseSortDir",reverseSortDir);
+        model.addAttribute("keyword",keyword);
 
         // Model for the table content
         model.addAttribute("listUsers",userList);
