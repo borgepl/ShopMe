@@ -9,7 +9,7 @@
 <!--@thymesVar id="reverseSortDir" type="java.lang.String"-->
 <!--@thymesVar id="keyword" type="java.lang.String"-->
 <!--@thymesVar id="currentPage" type="java.lang.Integer"-->
-<th th:fragment="column_link(fieldName,columnLabel)">
+<th th:fragment="column_link(fieldName,columnLabel,removeTag)" th:remove="${removeTag}">
     <a class="text-white" th:text="${columnLabel}"
        th:href="@{'/users/page/' + ${currentPage} + '?sortField=' + ${fieldName} + '&sortDir=' + ${sortField != fieldName ? sortDir : reverseSortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">
     </a>
