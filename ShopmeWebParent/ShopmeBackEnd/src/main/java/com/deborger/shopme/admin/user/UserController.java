@@ -150,7 +150,6 @@ public class UserController {
         List<User> users = userService.listAllSorted();
         UserCsvExporter exporter = new UserCsvExporter();
         exporter.export(users,response);
-
     }
 
     @GetMapping("/users/export/xls")
@@ -158,7 +157,13 @@ public class UserController {
         List<User> users = userService.listAllSorted();
         UserExcelExporter exporter = new UserExcelExporter();
         exporter.export(users,response);
+    }
 
+    @GetMapping("/users/export/pdf")
+    public void exportToPDF(HttpServletResponse response) throws IOException {
+        List<User> users = userService.listAllSorted();
+        UserPDFExporter exporter = new UserPDFExporter();
+        exporter.export(users,response);
     }
 
 }
