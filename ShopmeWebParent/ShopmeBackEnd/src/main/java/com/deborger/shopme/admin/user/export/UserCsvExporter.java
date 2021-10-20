@@ -1,4 +1,4 @@
-package com.deborger.shopme.admin.user;
+package com.deborger.shopme.admin.user.export;
 
 import com.deborger.shopme.common.entity.User;
 import org.supercsv.io.CsvBeanWriter;
@@ -7,9 +7,6 @@ import org.supercsv.prefs.CsvPreference;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 public class UserCsvExporter extends AbstractExporter {
