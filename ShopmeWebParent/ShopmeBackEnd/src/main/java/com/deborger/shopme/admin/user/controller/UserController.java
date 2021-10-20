@@ -1,5 +1,7 @@
-package com.deborger.shopme.admin.user;
+package com.deborger.shopme.admin.user.controller;
 
+import com.deborger.shopme.admin.user.UserNotFoundException;
+import com.deborger.shopme.admin.user.UserService;
 import com.deborger.shopme.admin.user.export.UserCsvExporter;
 import com.deborger.shopme.admin.user.export.UserExcelExporter;
 import com.deborger.shopme.admin.user.export.UserPDFExporter;
@@ -30,7 +32,7 @@ public class UserController {
     public String listAll(Model model) {
         List<User> userList = userService.listAll();
         model.addAttribute("listUsers",userList);
-        return "users";
+        return "users/users";
     }
 
     @GetMapping("/users")
@@ -66,7 +68,7 @@ public class UserController {
 
         // Model for the table content
         model.addAttribute("listUsers",userList);
-        return "users";
+        return "users/users";
     }
 
     @GetMapping("/users/new")
@@ -77,7 +79,7 @@ public class UserController {
         User user = new User();
         user.setEnabled(true);
         model.addAttribute("user",user);
-        return "user_form";
+        return "users/user_form";
     }
 
     @PostMapping("/users/save")
@@ -117,7 +119,7 @@ public class UserController {
             model.addAttribute("listRoles", listRoles);
             model.addAttribute("user",user);
             model.addAttribute("pageTitle","Edit User (ID : " + id + ")" );
-            return "user_form";
+            return "users/user_form";
 
         } catch (UserNotFoundException e) {
             redirectAttributes.addFlashAttribute("message",e.getMessage());

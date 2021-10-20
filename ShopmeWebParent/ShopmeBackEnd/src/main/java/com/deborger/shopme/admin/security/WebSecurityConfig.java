@@ -44,6 +44,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         // Permit All access to Authenticated users
         http.authorizeRequests()
+                .antMatchers("/users/**").hasAuthority("Admin")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

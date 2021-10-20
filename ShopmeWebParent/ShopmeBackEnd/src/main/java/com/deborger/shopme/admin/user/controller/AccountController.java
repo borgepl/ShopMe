@@ -1,7 +1,8 @@
-package com.deborger.shopme.admin.user;
+package com.deborger.shopme.admin.user.controller;
 
 import com.deborger.shopme.admin.FileUploadUtils;
 import com.deborger.shopme.admin.security.ShopmeUserDetails;
+import com.deborger.shopme.admin.user.UserService;
 import com.deborger.shopme.common.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -29,7 +30,7 @@ public class AccountController {
         User user = userService.getByEmail(email);
         model.addAttribute("user",user);
         model.addAttribute("pageTitle","Your Account Details");
-        return "account_form";
+        return "users/account_form";
     }
 
     @PostMapping("/account/update")

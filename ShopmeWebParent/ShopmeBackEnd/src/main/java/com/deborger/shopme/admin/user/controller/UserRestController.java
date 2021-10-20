@@ -1,5 +1,6 @@
-package com.deborger.shopme.admin.user;
+package com.deborger.shopme.admin.user.controller;
 
+import com.deborger.shopme.admin.user.UserService;
 import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
