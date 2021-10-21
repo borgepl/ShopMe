@@ -1,5 +1,7 @@
 package com.deborger.shopme.admin;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -10,6 +12,8 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 public class FileUploadUtils {
+
+    private static final Logger log = LoggerFactory.getLogger(FileUploadUtils.class);
 
     public static void saveFile(String uploadDir, String fileName, MultipartFile multipartFile) throws IOException {
         Path uploadPath = Paths.get(uploadDir);
@@ -33,12 +37,14 @@ public class FileUploadUtils {
                     try {
                         Files.delete(file);
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        log.error("Could not be delete the file :" + file);
+                        //e.printStackTrace();
                     }
                 }
             });
         } catch (IOException exception) {
-            exception.printStackTrace();
+            log.error("Could not list the directory :" + dirPath);
+            //exception.printStackTrace();
         }
     }
 }
