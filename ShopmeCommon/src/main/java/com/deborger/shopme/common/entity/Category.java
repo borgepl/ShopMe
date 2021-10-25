@@ -38,6 +38,12 @@ public class Category {
         this.id = id;
     }
 
+    public Category(String name) {
+        this.name = name;
+        this.alias = name;
+        this.image = "default.png";
+    }
+
     public Category(String name, String alias) {
         this.name = name;
         this.alias = alias;
