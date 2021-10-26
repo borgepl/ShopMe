@@ -38,6 +38,20 @@ public class Category {
         this.id = id;
     }
 
+    public static Category CopyIdAndName(Category category) {
+        Category categoryCopy = new Category();
+        categoryCopy.setId(category.getId());
+        categoryCopy.setName(category.getName());
+        return categoryCopy;
+    }
+
+    public static Category CopyIdAndName(Integer id, String name) {
+        Category categoryCopy = new Category();
+        categoryCopy.setId(id);
+        categoryCopy.setName(name);
+        return categoryCopy;
+    }
+
     public Category(String name) {
         this.name = name;
         this.alias = name;

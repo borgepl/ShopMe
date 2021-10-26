@@ -24,12 +24,12 @@ public class CategoryService {
 
         for (Category category : categoriesInDB) {
             if (category.getParent() == null ) {
-                categoriesUsedInForm.add(new Category(category.getName()));
+                categoriesUsedInForm.add(Category.CopyIdAndName(category));
                 //System.out.println(category.getName());
                 Set<Category> children = category.getChildren();
                 for (Category child : children) {
                     String newName = "--" + child.getName();
-                    categoriesUsedInForm.add(new Category(newName));
+                    categoriesUsedInForm.add(Category.CopyIdAndName(child.getId(),newName));
                     //System.out.println("--" + child.getName());
                     listChildren(categoriesUsedInForm, child,1);
                 }
@@ -47,9 +47,12 @@ public class CategoryService {
                 newName += "--";
             }
             newName += child.getName();
-            categoriesUsedInForm.add(new Category(newName));
+            categoriesUsedInForm.add(Category.CopyIdAndName(child.getId(),newName));
             listChildren(categoriesUsedInForm,child,newSubLevel);
         }
     }
 
+    public Category save(Category category) {
+        return categoryRepository.save(category);
+    }
 }
