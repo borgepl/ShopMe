@@ -9,7 +9,6 @@ import org.springframework.test.annotation.Rollback;
 
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.Callable;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -104,4 +103,12 @@ public class CategoryRepositoryTests {
         }
     }
 
+    @Test
+    public void testListRootCategories() {
+        List<Category> rootCategories = categoryRepository.findRootCategories();
+        for (Category rootCategory : rootCategories) {
+            String name = rootCategory.getName();
+            System.out.println(name);
+        }
+    }
 }

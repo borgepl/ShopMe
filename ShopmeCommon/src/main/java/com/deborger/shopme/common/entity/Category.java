@@ -3,6 +3,7 @@ package com.deborger.shopme.common.entity;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.Callable;
 
 @Entity
 @Table(name = "categories")
@@ -48,6 +49,22 @@ public class Category {
     public static Category CopyIdAndName(Integer id, String name) {
         Category categoryCopy = new Category();
         categoryCopy.setId(id);
+        categoryCopy.setName(name);
+        return categoryCopy;
+    }
+
+    public static Category copyFull(Category category) {
+        Category categoryCopy = new Category();
+        categoryCopy.setId(category.getId());
+        categoryCopy.setName(category.getName());
+        categoryCopy.setImage(category.getImage());
+        categoryCopy.setAlias(category.getAlias());
+        categoryCopy.setEnabled(category.getEnabled());
+        return categoryCopy;
+    }
+
+    public static Category copyFull(Category category, String name) {
+        Category categoryCopy = Category.copyFull(category);
         categoryCopy.setName(name);
         return categoryCopy;
     }
@@ -125,5 +142,11 @@ public class Category {
 
     public void setChildren(Set<Category> children) {
         this.children = children;
+    }
+
+    @Transient
+    public String getImagePath() {
+        if (id == null || image == null) return "/images/default-user.jpg";
+        return "/category-images/" + this.id + "/" + this.image;
     }
 }

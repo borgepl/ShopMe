@@ -4,6 +4,7 @@ import com.deborger.shopme.common.entity.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -15,7 +16,36 @@ public class CategoryService {
     private CategoryRepository categoryRepository;
 
     public List<Category> listAll() {
-        return (List<Category>) categoryRepository.findAll();
+        List<Category> rootCategories = categoryRepository.findRootCategories();
+        return listHierarchicalCategories(rootCategories);
+    }
+
+    public List<Category> listHierarchicalCategories(List<Category> rootCategories) {
+        List<Category> hierarchicalCategories =  new ArrayList<>();
+           for (Category rootCategory : rootCategories) {
+               hierarchicalCategories.add(Category.copyFull(rootCategory));
+               for (Category subCategory : rootCategory.getChildren()) {
+                   String newName = "--" + subCategory.getName();
+                   hierarchicalCategories.add(Category.copyFull(subCategory,newName));
+                   listSubHierarchicalCategories(hierarchicalCategories,subCategory,1);
+               }
+
+           }
+        return hierarchicalCategories;
+    }
+
+    public void listSubHierarchicalCategories(List<Category> hierarchicalCategories, Category parent, int subLevel) {
+        int newSubLevel = subLevel + 1;
+        for (Category subCategory : parent.getChildren()) {
+            String newName = "";
+            for (int i = 0; i < newSubLevel; i++) {
+                newName += "--";
+            }
+            newName += subCategory.getName();
+            hierarchicalCategories.add(Category.copyFull(subCategory,newName));
+            listSubHierarchicalCategories(hierarchicalCategories,subCategory,newSubLevel);
+        }
+
     }
 
     public List<Category> listCategoriesUsedInForm() {
