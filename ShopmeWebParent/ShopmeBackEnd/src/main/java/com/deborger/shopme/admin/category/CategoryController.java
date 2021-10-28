@@ -6,6 +6,7 @@ import com.deborger.shopme.common.entity.Category;
 import com.deborger.shopme.common.entity.Role;
 import com.deborger.shopme.common.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -23,9 +24,16 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @GetMapping("/categories")
-    public String listAll(Model model) {
-        List<Category> categories = categoryService.listAll();
+    public String listAll(@Param("sortDir") String sortDir, Model model) {
+        if (sortDir == null || sortDir.isEmpty()) {
+            sortDir = "asc";
+        }
+        List<Category> categories = categoryService.listAll(sortDir);
+        String reverseSortDir = sortDir.equals("asc") ? "desc" : "asc";
+
         model.addAttribute("listCategories",categories);
+        model.addAttribute("sortDir",sortDir);
+        model.addAttribute("reverseSortDir",reverseSortDir);
         return "categories/categories";
     }
 
