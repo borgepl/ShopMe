@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.*;
 
 @Service
+@Transactional
 public class CategoryService {
 
     @Autowired
@@ -141,5 +143,9 @@ public class CategoryService {
         });
         sortedChildren.addAll(children);
         return sortedChildren;
+    }
+
+    public void updateCategoryEnabledStatus(Integer id, Boolean enabled) {
+        categoryRepository.updateEnabledStatus(id,enabled);
     }
 }
