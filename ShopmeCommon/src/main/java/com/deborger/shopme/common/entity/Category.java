@@ -1,6 +1,7 @@
 package com.deborger.shopme.common.entity;
 
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.Callable;
@@ -67,6 +68,13 @@ public class Category {
         Category categoryCopy = Category.copyFull(category);
         categoryCopy.setName(name);
         return categoryCopy;
+    }
+
+    public Category(Integer id, String name, String alias) {
+        this.id = id;
+        this.name = name;
+        this.alias = alias;
+        this.image = "default.png";
     }
 
     public Category(String name) {
@@ -146,7 +154,7 @@ public class Category {
 
     @Transient
     public String getImagePath() {
-        if (id == null || image == null) return "/images/default-user.jpg";
+        if (id == null || image == null) return "/images/image-thumbnail.png";
         return "/category-images/" + this.id + "/" + this.image;
     }
 }

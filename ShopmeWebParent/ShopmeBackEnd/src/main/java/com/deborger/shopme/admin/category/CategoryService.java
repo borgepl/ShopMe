@@ -1,13 +1,11 @@
 package com.deborger.shopme.admin.category;
 
+import com.deborger.shopme.admin.user.UserNotFoundException;
 import com.deborger.shopme.common.entity.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.AbstractList;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class CategoryService {
@@ -84,5 +82,37 @@ public class CategoryService {
 
     public Category save(Category category) {
         return categoryRepository.save(category);
+    }
+
+    public Category get(Integer id) throws CategoryNotFoundException {
+        try {
+            return categoryRepository.findById(id).get();
+        } catch (NoSuchElementException exception) {
+            throw new CategoryNotFoundException("Could not find any category with ID " + id);
+        }
+    }
+
+    public String checkUnique(Integer id, String name, String alias) {
+        boolean isCreatingNew = (id == null || id == 0);  // in New Mode
+        Category categoryByName = categoryRepository.findByName(name);
+        if (isCreatingNew) {
+            if (categoryByName != null) {
+                return "DuplicateName";
+            } else {
+                Category categoryByAlias = categoryRepository.findByAlias(alias);
+                if (categoryByAlias != null) {
+                    return "DuplicateAlias";
+                }
+            }
+        } else {  //in Editing Mode - check if not for the same id
+            if (categoryByName != null && categoryByName.getId() != id) {
+                return "DuplicateName";
+            }
+            Category categoryByAlias = categoryRepository.findByAlias(alias);
+            if (categoryByAlias != null && categoryByAlias.getId() != id) {
+                return "DuplicateAlias";
+            }
+        }
+        return "OK";
     }
 }

@@ -1,4 +1,5 @@
 $(document).ready(function () {
+
     $("#buttonCancel").on("click",function () {
         window.location = moduleUrl;
     });
@@ -22,4 +23,18 @@ function showImageThumbnail(fileInput) {
         $("#thumbnail").attr("src", e.target.result);
     };
     reader.readAsDataURL(file);
+}
+
+function showModalDialog(title, message) {
+    $("#modalTitle").text(title);
+    $("#modalBody").text(message);
+    $("#modalDialog").modal();
+}
+
+function showErrorDialog(message) {
+    showModalDialog("Error",message);
+}
+
+function showWarningDialog(message) {
+    showModalDialog("Warning",message);
 }
