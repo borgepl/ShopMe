@@ -47,4 +47,15 @@ public class FileUploadUtils {
             //exception.printStackTrace();
         }
     }
+
+    public static void removeDir(String dir) {
+        cleanDir(dir);
+        Path dirPath = Paths.get(dir);
+        try {
+            Files.delete(dirPath);
+        } catch (IOException e) {
+            log.error("Could not remove the directory :" + dirPath);
+        }
+
+    }
 }
