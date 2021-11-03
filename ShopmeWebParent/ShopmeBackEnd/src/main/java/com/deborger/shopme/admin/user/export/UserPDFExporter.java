@@ -1,6 +1,6 @@
 package com.deborger.shopme.admin.user.export;
 
-import com.deborger.shopme.admin.user.export.AbstractExporter;
+import com.deborger.shopme.admin.AbstractExporter;
 import com.deborger.shopme.common.entity.User;
 import com.lowagie.text.*;
 import com.lowagie.text.Font;
@@ -18,7 +18,7 @@ public class UserPDFExporter extends AbstractExporter {
 
     public void export(List<User> userList, HttpServletResponse response) throws IOException {
 
-        super.setResponseHeader(response,"application/pdf",".pdf");
+        super.setResponseHeader(response,"application/pdf",".pdf","users_");
         ServletOutputStream outputStream = response.getOutputStream();
 
         Document document = new Document(PageSize.A4);

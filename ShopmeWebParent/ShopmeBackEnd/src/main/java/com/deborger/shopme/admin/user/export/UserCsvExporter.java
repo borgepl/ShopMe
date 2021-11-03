@@ -1,5 +1,6 @@
 package com.deborger.shopme.admin.user.export;
 
+import com.deborger.shopme.admin.AbstractExporter;
 import com.deborger.shopme.common.entity.User;
 import org.supercsv.io.CsvBeanWriter;
 import org.supercsv.io.ICsvBeanWriter;
@@ -13,7 +14,7 @@ public class UserCsvExporter extends AbstractExporter {
 
     public void export(List<User> userList, HttpServletResponse response) throws IOException {
 
-        super.setResponseHeader(response,"text/csv",".csv");
+        super.setResponseHeader(response,"text/csv",".csv","users_");
 
         ICsvBeanWriter csvBeanWriter = new CsvBeanWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);
 

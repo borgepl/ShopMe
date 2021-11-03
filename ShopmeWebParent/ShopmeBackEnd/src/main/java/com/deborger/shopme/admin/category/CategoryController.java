@@ -1,6 +1,7 @@
 package com.deborger.shopme.admin.category;
 
 import com.deborger.shopme.admin.FileUploadUtils;
+import com.deborger.shopme.admin.category.export.CategoryCsvExporter;
 import com.deborger.shopme.admin.user.UserNotFoundException;
 import com.deborger.shopme.admin.user.UserService;
 import com.deborger.shopme.common.entity.Category;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
@@ -128,5 +130,12 @@ public class CategoryController {
             redirectAttributes.addFlashAttribute("message",e.getMessage());
         }
         return "redirect:/categories";
+    }
+
+    @GetMapping("/categories/export/csv")
+    public void exportToCsv(HttpServletResponse response) throws IOException {
+        List<Category> categories = categoryService.listCategoriesUsedInForm();
+        CategoryCsvExporter exporter =  new CategoryCsvExporter();
+        exporter.export(categories,response);
     }
 }

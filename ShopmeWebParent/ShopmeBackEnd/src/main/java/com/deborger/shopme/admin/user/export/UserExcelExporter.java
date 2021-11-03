@@ -1,6 +1,6 @@
 package com.deborger.shopme.admin.user.export;
 
-import com.deborger.shopme.admin.user.export.AbstractExporter;
+import com.deborger.shopme.admin.AbstractExporter;
 import com.deborger.shopme.common.entity.User;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
@@ -57,7 +57,7 @@ public class UserExcelExporter extends AbstractExporter {
 
     public void export(List<User> userList, HttpServletResponse response) throws IOException {
 
-        super.setResponseHeader(response,"application/octet-stream",".xlsx");
+        super.setResponseHeader(response,"application/octet-stream",".xlsx","users_");
 
         writeHeaderLine();
         writeDataLines(userList);
