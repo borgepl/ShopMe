@@ -2,6 +2,7 @@ package com.deborger.shopme.admin.category;
 
 import com.deborger.shopme.admin.FileUploadUtils;
 import com.deborger.shopme.admin.user.UserNotFoundException;
+import com.deborger.shopme.admin.user.UserService;
 import com.deborger.shopme.common.entity.Category;
 import com.deborger.shopme.common.entity.Role;
 import com.deborger.shopme.common.entity.User;
@@ -25,18 +26,29 @@ public class CategoryController {
 
     @GetMapping("/categories")
     public String listFirstPage(@Param("sortDir") String sortDir, Model model) {
-        return listByPage(1,sortDir,model);
+        return listByPage(1,sortDir,null, model);
     }
 
     @GetMapping("/categories/page/{pageNum}")
-    public String listByPage(@PathVariable(name = "pageNum") Integer pageNum, @Param("sortDir") String sortDir, Model model) {
+    public String listByPage(@PathVariable(name = "pageNum") Integer pageNum,
+                             @Param("sortDir") String sortDir,
+                             @Param("keyword") String keyword,
+                             Model model) {
         if (sortDir == null || sortDir.isEmpty()) {
             sortDir = "asc";
         }
         CategoryPageInfo pageInfo = new CategoryPageInfo();
-        List<Category> categories = categoryService.listByPage(pageInfo, pageNum,sortDir);
+        List<Category> categories = categoryService.listByPage(pageInfo, pageNum,sortDir,keyword);
+
+        long startCount = (pageNum - 1) * CategoryService.ROOT_CATEGORIES_PER_PAGE + 1;
+        long endCount = startCount + CategoryService.ROOT_CATEGORIES_PER_PAGE - 1;
+        if (endCount > pageInfo.getTotalElements()) {
+            endCount = pageInfo.getTotalElements();
+        }
         String reverseSortDir = sortDir.equals("asc") ? "desc" : "asc";
 
+        model.addAttribute("startCount",startCount);
+        model.addAttribute("endCount",endCount);
         model.addAttribute("totalPages",pageInfo.getTotalPages());
         model.addAttribute("totalItems",pageInfo.getTotalElements());
         model.addAttribute("currentPage",pageNum);
@@ -44,6 +56,7 @@ public class CategoryController {
         model.addAttribute("sortField","name");
         model.addAttribute("sortDir",sortDir);
         model.addAttribute("reverseSortDir",reverseSortDir);
+        model.addAttribute("keyword",keyword);
         return "categories/categories";
     }
 
