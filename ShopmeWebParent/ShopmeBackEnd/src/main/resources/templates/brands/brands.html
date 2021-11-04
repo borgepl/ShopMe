@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head th:replace="fragments :: page_head('Brands - Shopme Admin')">
+</head>
+<body>
+
+<div class="container-fluid">
+    <div th:replace="navigation :: menu"></div>
+    <div>
+        <h2>Manage Brands</h2>
+        <a th:href="@{/brands/new}" class="fas fa-folder-plus fa-2x icon-dark mr-2"></a>
+        <a th:href="@{/brands/export/csv}" class="fas fa-file-csv fa-2x icon-dark mr-2"></a>
+    </div>
+    <div th:replace="fragments :: divMessage"></div>
+
+    <div th:replace="fragments :: search('/brands/page/1')"></div>
+
+    <div class="full-details">
+        <table class="table table-bordered table-striped table-hover table-responsive-xl">
+            <thead class="thead-dark">
+                <tr>
+                    <th class="hideAble-column">Brand ID</th>
+                    <th>Brand Logo</th>
+                    <th th:replace="fragments :: column_link('/brands','name','Brand Name','none')"></th>
+                    <th>Categories</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="brand : ${listBrands}">
+                    <td class="hideAble-column" th:text="${brand.id}"></td>
+                    <td>
+                        <span th:if="${brand.logo == null}" class="fas fa-portrait fa-3x icon-dark"></span>
+                        <img th:if="${brand.logo != null}" src="" width="80" height="80"/>
+                    </td>
+                    <td th:text="${brand.name}"></td>
+                    <td class="badge badge-secondary" th:text="${brand.categories}"></td>
+                    <td>
+                        <div th:replace="fragments :: actions('brand', '/brands', ${brand.id}, true)"></div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="less-details">
+        <div th:each="brand : ${listBrands}" class="row m-1">
+            <div class="col-4">
+                <span th:if="${brand.logo == null}" class="fas fa-portrait fa-3x icon-dark"></span>
+                <img th:if="${brand.logo != null}" src="" width="80" height="80"/>
+            </div>
+            <div class="col-8">
+                <div>[[${brand.name}]]</div>
+                <div class="mt-1">
+                    <div th:replace="fragments :: actions('brand', '/brands', ${brand.id}, true)"></div>
+                </div>
+            </div>
+            <div>&nbsp;</div>
+        </div>
+    </div>
+
+    <div th:if="${keyword != null}" class="text-center">
+        <div th:replace="fragments :: pagination('/brands','brands')"></div>
+    </div>
+
+    <div th:replace="modal_fragments :: modal_confirm"></div>
+
+    <div th:replace="fragments :: page_footer"></div>
+
+</div>
+<script th:src="@{/js/common_list.js}"></script>
+<script type="text/javascript">
+    moduleUrl = "[[@{/brands}]]";
+    $(document).ready(function () {
+        $(".link-delete").on("click", function (e) {
+            e.preventDefault();
+            showDeleteConfirmDialog($(this),'brand');
+        });
+    });
+</script>
+
+</body>
+</html>
