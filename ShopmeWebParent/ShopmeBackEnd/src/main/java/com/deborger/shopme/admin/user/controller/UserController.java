@@ -96,7 +96,7 @@ public class UserController {
             FileUploadUtils.saveFile(uploadDir,fileName,multipartFile);
         } else {
             if (theUser.getPhotos().isEmpty()) {
-                theUser.setPassword(null);
+                theUser.setPhotos(null);
             }
             userService.save(theUser);
         }

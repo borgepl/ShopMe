@@ -67,6 +67,12 @@ public class Brand {
         this.categories = categories;
     }
 
+    @Transient
+    public String getImagePath() {
+        if (id == null || logo == null) return "/images/image-thumbnail.png";
+        return "/brand-images/" + this.id + "/" + this.logo;
+    }
+
     @Override
     public String toString() {
         return "Brand{" +
