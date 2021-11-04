@@ -21,9 +21,9 @@
 <!--@thymesVar id="reverseSortDir" type="java.lang.String"-->
 <!--@thymesVar id="keyword" type="java.lang.String"-->
 <!--@thymesVar id="currentPage" type="java.lang.Integer"-->
-<th th:fragment="column_link(fieldName,columnLabel,removeTag)" th:remove="${removeTag}">
+<th th:fragment="column_link(moduleUrl,fieldName,columnLabel,removeTag)" th:remove="${removeTag}">
     <a class="text-white" th:text="${columnLabel}"
-       th:href="@{'/users/page/' + ${currentPage} + '?sortField=' + ${fieldName} + '&sortDir=' + ${sortField != fieldName ? sortDir : reverseSortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">
+       th:href="@{${moduleUrl} + '/page/' + ${currentPage} + '?sortField=' + ${fieldName} + '&sortDir=' + ${sortField != fieldName ? sortDir : reverseSortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">
     </a>
     <span th:if="${sortField == fieldName}"
           th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}"></span>
@@ -32,6 +32,25 @@
    class="page-link" th:text="${label}"
    th:href="@{${moduleUrl} + '/page/' + ${pageNum} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">
 </a>
+
+<div th:fragment="status(enabled, entityName, entityUrl)" th:remove="tag">
+    <a th:if="${enabled == true}" class="fas fa-check-circle fa-2x icon-green"
+       th:href="@{${entityUrl} + '/enabled/false'}"
+       th:title="'Disable this ' + ${entityName}" ></a>
+    <a th:if="${enabled == false}" class="fas fa-circle fa-2x icon-dark"
+       th:href="@{${entityUrl} + '/enabled/true'}"
+       th:title="'Enable this ' + ${entityName}"></a>
+</div>
+
+<div th:fragment="actions(entityName, moduleUrl, entityId, showDelete)">
+    <a class="fas fa-edit fa-2x icon-green" th:href="@{${moduleUrl} + '/edit/' + ${entityId}}"
+       th:title="'Edit this ' + ${entityName}"></a>
+    &nbsp;
+    <th:block th:if="${showDelete}">
+    <a class="fas fa-trash fa-2x icon-silver link-delete" th:href="@{${moduleUrl} + '/delete/' + ${entityId}}"
+       th:userId="${entityId}" th:title="'Delete this ' + ${entityName}"></a>
+    </th:block>
+</div>
 
 <div th:fragment="pagination(moduleUrl,entityName)" th:remove="tag">
 <div class="text-center" th:if="${totalItems > 0}">
@@ -69,6 +88,10 @@
         </ul>
     </nav>
 </div>
+</div>
+
+<div th:fragment="divMessage" th:if="${message != null}" class="alert alert-success text-center">
+    [[${message}]]
 </div>
 
 <div th:fragment="search(moduleUrl)">
