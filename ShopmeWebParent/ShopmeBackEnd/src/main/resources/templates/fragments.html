@@ -48,7 +48,7 @@
     &nbsp;
     <th:block th:if="${showDelete}">
     <a class="fas fa-trash fa-2x icon-silver link-delete" th:href="@{${moduleUrl} + '/delete/' + ${entityId}}"
-       th:userId="${entityId}" th:title="'Delete this ' + ${entityName}"></a>
+       th:entityId="${entityId}" th:title="'Delete this ' + ${entityName}"></a>
     </th:block>
 </div>
 

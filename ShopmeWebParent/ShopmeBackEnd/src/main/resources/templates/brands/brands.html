@@ -30,8 +30,7 @@
                 <tr th:each="brand : ${listBrands}">
                     <td class="hideAble-column" th:text="${brand.id}"></td>
                     <td>
-                        <span th:if="${brand.logo == null}" class="fas fa-portrait fa-3x icon-dark"></span>
-                        <img th:if="${brand.logo != null}" src="" width="80" height="80"/>
+                        <img th:src="@{${brand.imagePath}}" class="img-fluid" style="width: 100px"/>
                     </td>
                     <td th:text="${brand.name}"></td>
                     <td class="badge badge-secondary" th:text="${brand.categories}"></td>
@@ -47,7 +46,7 @@
         <div th:each="brand : ${listBrands}" class="row m-1">
             <div class="col-4">
                 <span th:if="${brand.logo == null}" class="fas fa-portrait fa-3x icon-dark"></span>
-                <img th:if="${brand.logo != null}" src="" width="80" height="80"/>
+                <img th:if="${brand.logo != null}" th:src="@{${brand.imagePath}}" width="80" height="80"/>
             </div>
             <div class="col-8">
                 <div>[[${brand.name}]]</div>
