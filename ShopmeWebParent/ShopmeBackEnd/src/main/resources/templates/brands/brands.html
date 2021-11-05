@@ -58,9 +58,7 @@
         </div>
     </div>
 
-    <div th:if="${keyword != null}" class="text-center">
-        <div th:replace="fragments :: pagination('/brands','brands')"></div>
-    </div>
+    <div th:replace="fragments :: pagination('/brands','brands')"></div>
 
     <div th:replace="modal_fragments :: modal_confirm"></div>
 
