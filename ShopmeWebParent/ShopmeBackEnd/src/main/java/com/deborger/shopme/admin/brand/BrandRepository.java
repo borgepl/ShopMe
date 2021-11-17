@@ -6,6 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import java.util.List;
+
 public interface BrandRepository extends PagingAndSortingRepository<Brand, Integer> {
 
     public Brand findByName(String name);
@@ -14,4 +16,8 @@ public interface BrandRepository extends PagingAndSortingRepository<Brand, Integ
 
     @Query("select b from Brand b where b.name like %?1%")
     public Page<Brand> findAll(String keyword, Pageable pageable);
+
+    @Query("SELECT NEW Brand(b.id, b.name) FROM Brand b ORDER BY b.name ASC")
+    //@Query("select b from Brand b order by b.name ASC")
+    public List<Brand> findAll();
 }
