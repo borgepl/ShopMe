@@ -1,13 +1,16 @@
 package com.deborger.shopme.admin.product;
 
+import com.deborger.shopme.admin.category.CategoryNotFoundException;
 import com.deborger.shopme.common.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
 
 @Service
+@Transactional
 public class ProductService {
 
     @Autowired
@@ -44,5 +47,17 @@ public class ProductService {
         }
 
         return "OK";
+    }
+
+    public void updateProductEnabledStatus(Integer id, boolean enabled) {
+        productRepository.updateEnabledStatus(id, enabled);
+    }
+
+    public void delete(Integer id) throws CategoryNotFoundException {
+        Long countById = productRepository.countById(id);
+        if (countById == null || countById == 0) {
+            throw new CategoryNotFoundException("Could not find any product with ID " + id);
+        }
+        productRepository.deleteById(id);
     }
 }
