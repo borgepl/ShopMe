@@ -32,7 +32,7 @@
                 <tr th:each="product : ${listProducts}">
                     <td class="hideAble-column" th:text="${product.id}"></td>
                     <td>
-<!--                        <img th:src="@{${product.imagePath}}" class="img-fluid" style="width: 100px"/>-->
+                        <img th:src="@{${product.mainImagePath}}" style="width: 120px" class="img-fluid" />
                     </td>
                     <td th:text="${product.name}"></td>
                     <td>[[${product.brand.name}]]</td>
